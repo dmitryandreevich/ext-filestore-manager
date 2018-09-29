@@ -6,14 +6,24 @@ Ext.define('MyApp.view.main.MainController', {
         'Ext.MessageBox',
     ],
 
-    onGo: function(){
-        Ext.Msg.alert('Alert title', 'Clicked!');
+    control: {
+        'grid': {
+            itemtap: 'onItemTap'
+        }
     },
 
-    remove: function(){
-        var filesGrid = Ext.getCmp('filesGrid');
-        var selection = filesGrid.getSelection().data; 
-        console.log(selection);
+    onItemTap: function(grid, index, target, record, e) {
+        if(e.target.classList.contains("fa-trash") ||
+           e.target.children[0] && e.target.children[0].classList.contains("fa-trash"))
+        {
+            console.log(record);
+            
+            Ext.Msg.confirm("Confirmation", "Are you sure you want to do that?", function(btn) {
+                if(btn == 'yes') {
+                    grid.getStore().removeAt(index);
+                }
+            });
+        }
     },
 
     onRefreshList: function(){
@@ -26,8 +36,7 @@ Ext.define('MyApp.view.main.MainController', {
                 data: filesData
              });
 
-            var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
-            if( grid )
+            if( grid = Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid ) )
                 grid.setStore(store);
         } );
     },
@@ -42,26 +51,28 @@ Ext.define('MyApp.view.main.MainController', {
             
             if( selectedRow.data.type === 'dir' ){
                 fStore.getFilesData(path ,filesData => {
-                    var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
-                    
-                    if( grid )
+                    if( grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid ) )
                         grid.getStore().loadData(filesData);
 
                     MyApp.UserData.currentPath = path;
                 } );
             }else if( selectedRow.data.type === 'file'){
                 fStore.getFileContent(path, resp => {
-                    var response = JSON.parse(resp);
-                    
-                    if(response.type === 'text/plain'){
-                        //this.openTextEdtor(response.content);
-                        var textEditor = Ext.create('TextEditor');
-                        textEditor.setValue(response.content);
-                        textEditor.show();
-                    } else if( ~response.type.indexOf('image') ){
-                        var iv = Ext.create('MyApp.components.ImageViewer');
-                        iv.setSrcBase64(response.content);
-                        iv.show();
+                    if(resp !== ''){
+                        var response = JSON.parse(resp);
+                        
+                        if(response.type === 'text/plain'){
+                            var textEditor = Ext.create('TextEditor');
+
+                            textEditor.setValue(response.content);
+                            textEditor.setPathToFile( MyApp.UserData.currentPath + '/' + response.basename );
+                            textEditor.show();
+                        } else if( ~response.type.indexOf('image') ){
+                            var iv = Ext.create('MyApp.components.ImageViewer');
+
+                            iv.setSrcBase64(response.content);
+                            iv.show();
+                        }
                     }
                 });
             }
@@ -76,8 +87,7 @@ Ext.define('MyApp.view.main.MainController', {
             var fStore = Ext.create('FileStore'); 
 
             fStore.getFilesData(backPath ,filesData => {
-                var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
-                if( grid )
+                if( grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid ) )
                     grid.getStore().loadData(filesData);
 
                 MyApp.UserData.currentPath = backPath;
@@ -144,45 +154,56 @@ Ext.define('MyApp.view.main.MainController', {
     },
     // в отдельные классы
 
-    openTextEdtor: function(text){
-        var w = Ext.create('Ext.window.Window', {
-            width: 500,
-            height: 500,
-            padding: 10,
-            title: 'Просмотр файла',
-            closable: true,
-            
-            items:[
-                {
-                    xtype: 'textareafield',
-                    height: 350,
-                    disabled: true,
-                    value: text,
-                }
-            ],
+    onDownloadFile: function(){
+        var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
+        var selectedRow = grid.getSelection();
 
-            buttons: [
-                {
-                    text: 'Закрыть',
-                    handler: () => { w.close(); }
-                }
-            ]
-         });
-         w.show();
+        var fStore = Ext.create('FileStore');
+        fStore.getFileContent(selectedRow.data.path, response => {
+            response = JSON.parse(response);
 
-         return w;
+            var type = response.type;
+            var filename = response.basename;
+            var content = response.content;
 
+            // пока проблема со скачиванием любых закодированных файлов
+            if(~ type.indexOf('text') ){
+                var blob = new Blob([content], {
+                    type: type
+                });
+
+                var a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                url = window.URL.createObjectURL(blob);
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        } );
     },
+
+    onCreateFile: function () {
+        Ext.Msg.prompt('Создание нового файла', 'Пожалуйста, название с расширением:', function(btn, text){
+            if (btn == 'ok'){
+                Ext.create('FileStore').createOrRewriteFile( MyApp.UserData.currentPath + text, '', () => {
+                    Ext.toast('Файл был успешно создан!');
+                });
+            }
+        });
+    },
+
 
     reloadGridData: function(path, fStoreInstance = false){
         if(!fStoreInstance)
             fStoreInstance = Ext.create('FileStore'); 
-
             fStoreInstance.getFilesData(path ,filesData => {
-            var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
-            if( grid )
+
+            if( grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid ) )
                 grid.getStore().loadData(filesData);
 
         } );
-    }
+    },
+
 });

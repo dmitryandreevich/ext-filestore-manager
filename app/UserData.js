@@ -1,7 +1,8 @@
 Ext.define('MyApp.UserData', {
     singleton: true,
 
-    currentPath: '',
+    currentPath: '', // current folder
+    currentFile: '',
 
 
 

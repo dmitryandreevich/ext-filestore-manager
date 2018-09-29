@@ -29,38 +29,49 @@ Ext.define('MyApp.view.main.Main', {
                     items: [
                         {
                             xtype: 'button',
-                            text: 'Назад',
+                            iconCls  : 'fa fa-backward',
                             handler: 'onBackFolder',
+                        },
+                        {
+                            xtype: 'button',
+                            iconCls  : 'x-fa fa-refresh',
+                            handler: 'onRefreshList',
+                        },
+                        {
+                            xtype: 'button',
+                            iconCls: 'fa fa-download',
+                            handler: 'onDownloadFile'
+                        },
+                        {
+                            xtype: 'button',
+                            iconCls: 'fa fa-trash',
+                            handler: 'onDelete'
+                        },
+                        {
+                            xtype: 'button',
+                            text: ' + ',
+                            iconCls: 'fa fa-folder',
+                            handler: 'onNewFolder'
+                        },
+                        {
+                            xtype: 'button',
+                            text: ' + ',
+                            iconCls: 'fa fa-file',
+                            handler: 'onCreateFile'
                         },
                         {
                             xtype: 'button',
                             text: 'Открыть',
                             handler: 'onOpenFolder',
                         },
-                        {
-                            xtype: 'button',
-                            text: 'Обновить',
-                            handler: 'onRefreshList',
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Загрузить'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Удалить',
-                            handler: 'onDelete'
-                        },
+                        
+                        
                         {
                             xtype: 'button',
                             text: 'Переименовать',
+                            
                             handler: 'onRename'
                         },
-                        {
-                            xtype: 'button',
-                            text: 'Новая папка',
-                            handler: 'onNewFolder'
-                        }
                         
                     ]            
                 },
@@ -94,8 +105,8 @@ Ext.define('MyApp.view.main.Main', {
                             flex: 2
                         },
                         {
-                            text: 'Путь',
-                            dataIndex: 'path',
+                            text: 'Деqствия',
+                            dataIndex: 'actions',
                             flex: 2
                         },
                     ],

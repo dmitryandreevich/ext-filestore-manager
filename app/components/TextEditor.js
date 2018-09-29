@@ -2,6 +2,9 @@ Ext.define('MyApp.components.TextEditor', {
     extend: 'Ext.window.Window',
     alias: 'TextEditor',
     id: 'textEditorWindow',
+    config: {
+        pathToFile: ''
+    },
     
     width: 500,
     height: 500,
@@ -31,7 +34,16 @@ Ext.define('MyApp.components.TextEditor', {
         },
         {
             text: 'Сохранить',
-            handler: '',
+            handler: () => {
+                var pathToFile = Ext.getCmp('textEditorWindow').getPathToFile();
+                var content = Ext.getCmp('editorArea').getValue();
+
+                console.log(content);
+                Ext.create('FileStore').createOrRewriteFile(pathToFile, content, () => {
+                    Ext.toast('Файл был успешно сохранён!');
+                });
+                
+            },
         }
     ]
  });

@@ -95,6 +95,22 @@ Ext.define('MyApp.FileStore.FileStore', {
                 callback(response.responseText);
             }
         });
+    },
+
+    createOrRewriteFile(path, content = ' ', callback = null){
+        Ext.Ajax.request({
+            url: MyApp.FileStore.Config.urlMethods.createOrRewriteFile,
+            method: 'POST',
+            params: {
+                path: path,
+                content: content
+            },
+
+            success: function(response){
+                callback(response.responseText);
+            }
+        });
     }
+
 
 });

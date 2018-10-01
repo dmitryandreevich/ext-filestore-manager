@@ -9,7 +9,7 @@ Ext.define('MyApp.components.ImageViewer', {
         img.setSrc('data:image;base64,' + imgBase64);
     },
     
-    width: 500,
+    width: 700,
     height: 500,
     closable: true,
     //html: "<img src='data:image;base64,"+ imageBase64 +"'>"

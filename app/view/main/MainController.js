@@ -6,6 +6,7 @@ Ext.define('MyApp.view.main.MainController', {
         'Ext.MessageBox',
     ],
 
+    /*
     control: {
         'grid': {
             itemtap: 'onItemTap'
@@ -24,7 +25,7 @@ Ext.define('MyApp.view.main.MainController', {
                 }
             });
         }
-    },
+    },*/
 
     onRefreshList: function(){
 
@@ -106,7 +107,7 @@ Ext.define('MyApp.view.main.MainController', {
             fStore.delete(selectedRow.data.path, selectedRow.data.type, () => {
                 var currentPath = MyApp.UserData.currentPath;
                 this.reloadGridData( currentPath, fStore );
-                Ext.toast('Удалено!');
+                //Ext.toast('Удалено!');
 
                 //grid.getStore().remove(selectedRow); Тут я не решил. Либо на клиенте просто удалять строку, либо синхронизировать.
             });
@@ -123,7 +124,7 @@ Ext.define('MyApp.view.main.MainController', {
                 var currentPath = MyApp.UserData.currentPath;
 
                 fStore.createNewFolder(currentPath, text, () => {
-                    Ext.toast('Папка была успешно создана!');
+                   // Ext.toast('Папка была успешно создана!');
                     reloadGridDataFunc( currentPath, fStore );
                 });
             }
@@ -145,14 +146,13 @@ Ext.define('MyApp.view.main.MainController', {
 
                 if(text !== ''){
                     fStore.rename(pathToFile, newPathToFile, () => {
-                        Ext.toast('Файл был переименован!');
+                        //Ext.toast('Файл был переименован!');
                         reloadGridDataFunc(currentPath, fStore);
                     });
                 }
             }
         });
     },
-    // в отдельные классы
 
     onDownloadFile: function(){
         var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
@@ -188,12 +188,54 @@ Ext.define('MyApp.view.main.MainController', {
         Ext.Msg.prompt('Создание нового файла', 'Пожалуйста, название с расширением:', function(btn, text){
             if (btn == 'ok'){
                 Ext.create('FileStore').createOrRewriteFile( MyApp.UserData.currentPath + text, '', () => {
-                    Ext.toast('Файл был успешно создан!');
+                    //Ext.toast('Файл был успешно создан!');
                 });
             }
         });
     },
 
+    onSelectStore: function () {
+        var w = Ext.create('Ext.window.Window', {
+            width: 400,
+            padding: 10,
+
+            items: [
+                {
+                    xtype: 'combobox',
+                    label: 'Хранилище',
+                    displayField: 'name',
+                    valueField: 'abbr',
+                    editable: false,
+                    value: 'local',
+                    id: 'selStoreCombobox',
+                    store: [
+                        { abbr: 'local', name: 'Локальное хранилище (Local)' },
+                        { abbr: 'S3', name: 'Облачное хранилище (AWS3)' },
+                    ]
+                }
+            ],
+
+            buttons: [
+                {
+                    text: 'Закрыть',
+                    handler: () => { 
+                        w.close();
+                     }
+                },
+                {
+                    text: 'Сохранить',
+                    handler: () => {
+                        var combobox = Ext.getCmp('selStoreCombobox');
+                        MyApp.UserData.setSelectedStore( combobox.getValue() );
+                        Ext.get('refreshButton').el.dom.click();
+                        Ext.get('currentStore').setHtml('Текущее хранилище: ' + combobox.getValue());
+                        w.close();
+                    }
+                }
+            ]
+            
+        }).show();
+    },
 
     reloadGridData: function(path, fStoreInstance = false){
         if(!fStoreInstance)

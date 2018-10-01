@@ -34,6 +34,7 @@ Ext.define('MyApp.view.main.Main', {
                         },
                         {
                             xtype: 'button',
+                            id: 'refreshButton',
                             iconCls  : 'x-fa fa-refresh',
                             handler: 'onRefreshList',
                         },
@@ -72,6 +73,16 @@ Ext.define('MyApp.view.main.Main', {
                             
                             handler: 'onRename'
                         },
+                        {
+                            xtype: 'button',
+                            text: 'Выбрать хранилище',
+                            handler: 'onSelectStore'
+                        },
+                        {
+                            xtype: 'label',
+                            html: 'Текущее хранилище: local',
+                            id: 'currentStore'
+                        }
                         
                     ]            
                 },
@@ -88,7 +99,8 @@ Ext.define('MyApp.view.main.Main', {
                     
                         {
                             text: 'Имя',
-                            dataIndex: 'filename'
+                            dataIndex: 'filename',
+                            flex: 2
                         },
                         {
                             text: 'Расширение',
@@ -102,11 +114,6 @@ Ext.define('MyApp.view.main.Main', {
                         {
                             text: 'Дата создания',
                             dataIndex: 'timestamp',
-                            flex: 2
-                        },
-                        {
-                            text: 'Деqствия',
-                            dataIndex: 'actions',
                             flex: 2
                         },
                     ],

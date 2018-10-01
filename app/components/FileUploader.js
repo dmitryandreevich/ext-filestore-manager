@@ -12,7 +12,7 @@ Ext.define('MyApp.components.FileUploader', {
     
     items: [{
         xtype: 'filefield',
-        name: 'photo',
+        name: 'file',
         fieldLabel: 'Photo',
         labelWidth: 50,
         msgTarget: 'side',
@@ -31,6 +31,7 @@ Ext.define('MyApp.components.FileUploader', {
                     url: 'http://t-maxim/web/?r=main/refresh',
                     waitMsg: 'Uploading your photo...',
                     success: function(form, action) {
+                        console.log(action);
                         Ext.Msg.alert('Success', action.result.message);
                      },
                      failure: function(form, action) {

@@ -7,31 +7,6 @@ Ext.application({
     requires: [
         'MyApp.*',
     ],
-    openImageViewer: function(imageBase64){
-        var w = Ext.create('Ext.window.Window', {
-            width: 500,
-            height: 500,
-            clossable: true,
-            //html: "<img src='data:image;base64,"+ imageBase64 +"'>"
-
-            items: [
-                {
-                    xtype: 'img',
-                    src: 'data:image;base64,' + imageBase64,
-                    id: 'img',
-                    width: 50,
-                    height: 50,
-                    
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Закрыть',
-                    handler: () => { w.close(); }       
-                }
-            ]
-        }).show();
-    },
 
     launch: function(){
 
@@ -50,14 +25,14 @@ Ext.application({
          } );
         /*
          var e = Ext.create('Ext.window.Window',{
+             closable: true,
              items: [
                  {
                      xtype: 'fileuploader'
                  }
-             ]
+             ],
          }).show();
-         */
-        
+        */
          
     }
 

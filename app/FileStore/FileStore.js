@@ -12,11 +12,13 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     getFilesData: function(path = '', callback){
+        var selectedStore = MyApp.UserData.selectedStore;
 
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.getFilesData,
             method: 'POST',
             params: {
+                selectedStore: selectedStore,
                 path: path
             },
             success: function(response){
@@ -39,27 +41,31 @@ Ext.define('MyApp.FileStore.FileStore', {
      */
 
     delete: function(path, type, callback){  
+        var selectedStore = MyApp.UserData.selectedStore;
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.delete,
             method: 'POST',
             params: {
                 path: path,
-                type: type
+                type: type,
+                selectedStore: selectedStore
             },
             success: function(response){
-
                 callback(response);
             }
         });
     },
 
     createNewFolder: function(path, name, callback = null){
+        var selectedStore = MyApp.UserData.selectedStore;
+
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.createNewFolder,
             method: 'POST',
             params: {
                 path: path,
-                name: name
+                name: name,
+                selectedStore: selectedStore
             },
 
             success: function(response){
@@ -69,12 +75,15 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     rename: function(path, newPath, callback = null){
+        var selectedStore = MyApp.UserData.selectedStore;
+
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.rename,
             method: 'POST',
             params: {
                 path: path,
-                newPath: newPath
+                newPath: newPath,
+                selectedStore: selectedStore
             },
 
             success: function(response){
@@ -84,11 +93,14 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     getFileContent: function(path, callback = null){
+        var selectedStore = MyApp.UserData.selectedStore;
+
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.getFileContent,
             method: 'POST',
             params: {
                 path: path,
+                selectedStore: selectedStore
             },
 
             success: function(response){
@@ -98,12 +110,15 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     createOrRewriteFile(path, content = ' ', callback = null){
+        var selectedStore = MyApp.UserData.selectedStore;
+
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.createOrRewriteFile,
             method: 'POST',
             params: {
                 path: path,
-                content: content
+                content: content,
+                selectedStore: selectedStore
             },
 
             success: function(response){

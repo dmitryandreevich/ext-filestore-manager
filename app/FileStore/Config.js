@@ -10,7 +10,8 @@ Ext.define('MyApp.FileStore.Config', {
         createNewFolder: 'http://t-maxim/web/?r=main/new_folder',
         rename: 'http://t-maxim/web/?r=main/rename',
         getFileContent: 'http://t-maxim/web/?r=main/get_content',
-        createOrRewriteFile: 'http://t-maxim/web/?r=main/create_or_rewrite_file'
+        createOrRewriteFile: 'http://t-maxim/web/?r=main/create_or_rewrite_file',
+        uploadFile: 'http://t-maxim/web/?r=main/upload'
 
     }
 })

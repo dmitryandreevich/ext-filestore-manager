@@ -7,7 +7,7 @@ Ext.define('MyApp.UserData', {
 
     setSelectedStore: function(storeName) {
         if(storeName !== 'local' && storeName !== 'S3')
-            throw ('Undefined store name. Local or S3');
+            throw ('Undefined store name. Correctly local or S3');
 
         this.selectedStore = storeName;
     }

@@ -6,27 +6,6 @@ Ext.define('MyApp.view.main.MainController', {
         'Ext.MessageBox',
     ],
 
-    /*
-    control: {
-        'grid': {
-            itemtap: 'onItemTap'
-        }
-    },
-
-    onItemTap: function(grid, index, target, record, e) {
-        if(e.target.classList.contains("fa-trash") ||
-           e.target.children[0] && e.target.children[0].classList.contains("fa-trash"))
-        {
-            console.log(record);
-            
-            Ext.Msg.confirm("Confirmation", "Are you sure you want to do that?", function(btn) {
-                if(btn == 'yes') {
-                    grid.getStore().removeAt(index);
-                }
-            });
-        }
-    },*/
-
     onRefreshList: function(){
 
        var fStore = Ext.create('FileStore'); 
@@ -104,12 +83,23 @@ Ext.define('MyApp.view.main.MainController', {
             fStore.delete(selectedRow.data.path, selectedRow.data.type, () => {
                 var currentPath = MyApp.UserData.currentPath;
                 this.reloadGridData( currentPath, fStore );
-                //Ext.toast('Удалено!');
-
-                //grid.getStore().remove(selectedRow); Тут я не решил. Либо на клиенте просто удалять строку, либо синхронизировать.
+                // Тут я не решил. Либо на клиенте просто удалять строку, либо синхронизировать.
+                //grid.getStore().remove(selectedRow);
             });
         }
 
+    },
+
+    onUpload: function(){
+        Ext.create('Ext.window.Window',{
+            closable: true,
+            title: 'Загрузчик файлов',
+            items: [
+                {
+                    xtype: 'fileuploader'
+                }
+            ],
+        }).show();
     },
 
     onNewFolder: function(){

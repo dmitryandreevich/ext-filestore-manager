@@ -2,10 +2,9 @@ Ext.define('MyApp.components.FileUploader', {
     extend: 'Ext.form.Panel',
     alias: 'FileUploader',
     xtype: 'fileuploader',
-    title: 'Загрузчик файлов',
     
     width: 400,
-    bodyPadding: 10,
+    bodyPadding: 15,
     
     frame: true,
     renderTo: Ext.getBody(),
@@ -13,12 +12,12 @@ Ext.define('MyApp.components.FileUploader', {
     items: [{
         xtype: 'filefield',
         name: 'file',
-        fieldLabel: 'Photo',
+        fieldLabel: 'file',
         labelWidth: 50,
         msgTarget: 'side',
         allowBlank: false,
         anchor: '100%',
-        buttonText: 'Select Photo...'
+        buttonText: 'Выберите файл...'
     }],
 
     buttons: [{
@@ -28,16 +27,18 @@ Ext.define('MyApp.components.FileUploader', {
 
             if(form.isValid()) {
                 form.submit({
-                    url: 'http://t-maxim/web/?r=main/refresh',
-                    waitMsg: 'Uploading your photo...',
+                    url: MyApp.FileStore.Config.urlMethods.uploadFile,
+                    params: {
+                        path: MyApp.UserData.currentPath,
+                        selectedStore: MyApp.UserData.selectedStore
+                    },
+                    waitMsg: 'Загрузка вашего файла...',
                     success: function(form, action) {
                         console.log(action);
-                        Ext.Msg.alert('Success', action.result.message);
                      },
-                     failure: function(form, action) {
+                    failure: function(form, action) {
                         console.log(action);
-                        Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
-                     }
+                    }
                 });
             }
         }

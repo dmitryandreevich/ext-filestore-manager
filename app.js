@@ -23,20 +23,7 @@ Ext.application({
              if( grid )
                  grid.setStore(store);
          } );
-        /*
-         var e = Ext.create('Ext.window.Window',{
-             closable: true,
-             items: [
-                 {
-                     xtype: 'fileuploader'
-                 }
-             ],
-         }).show();
-        */
-         
     }
-
-    
 });
 
 

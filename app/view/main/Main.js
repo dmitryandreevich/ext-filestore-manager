@@ -1,12 +1,3 @@
-var dataStore = Ext.create('Ext.data.Store', {
-    model: 'MyApp.view.main.MainModel',
-
-    data: [
-       { fileName: 'fileName', fileSize: 123, extension: 'png', created: '12345' },
-    ]
-    
-});
-
 Ext.define('MyApp.view.main.Main', {
     extend: 'Ext.panel.Panel',
     requires:[
@@ -62,6 +53,11 @@ Ext.define('MyApp.view.main.Main', {
                         },
                         {
                             xtype: 'button',
+                            text: 'Загрузить',
+                            handler: 'onUpload',
+                        },
+                        {
+                            xtype: 'button',
                             text: 'Открыть',
                             handler: 'onOpenFolder',
                         },
@@ -90,7 +86,6 @@ Ext.define('MyApp.view.main.Main', {
                     xtype: 'grid',
                     width: 800,
                     height: 500,
-                    store: dataStore,
                     selModel: 'cellmodel',
                     id: 'filesGrid',
                    

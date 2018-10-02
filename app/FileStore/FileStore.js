@@ -22,6 +22,8 @@ Ext.define('MyApp.FileStore.FileStore', {
                 path: path
             },
             success: function(response){
+                console.log(response.responseText);
+
                 var filesData = JSON.parse(response.responseText);
                 var storeData = [];
 
@@ -122,6 +124,8 @@ Ext.define('MyApp.FileStore.FileStore', {
             },
 
             success: function(response){
+                console.log(response.responseText);
+                
                 callback(response.responseText);
             }
         });

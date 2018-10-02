@@ -120,7 +120,7 @@ Ext.define('MyApp.view.main.Main', {
                     listeners: {
                         dblclick: {
                             element: 'element',
-                            fn: 'onOpenFolder'
+                            fn: 'onOpen'
                         },
 
                     },

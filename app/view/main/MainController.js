@@ -42,7 +42,7 @@ Ext.define('MyApp.view.main.MainController', {
         } );
     },
     
-    onOpenFolder: function(){
+    onOpen: function(){
         var grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid );
         var selectedRow = grid.getSelection();
 
@@ -84,15 +84,12 @@ Ext.define('MyApp.view.main.MainController', {
         var currentPath = MyApp.UserData.currentPath;
 
         if( currentPath !== '' ){
-            var backPath = currentPath + '/..';
+            var backPath = currentPath + '/../';
             var fStore = Ext.create('FileStore'); 
-
-            fStore.getFilesData(backPath ,filesData => {
-                if( grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid ) )
-                    grid.getStore().loadData(filesData);
-
+        
+            this.reloadGridData(backPath, fStore, () => {
                 MyApp.UserData.currentPath = backPath;
-            } );
+            });
         }
     },
 
@@ -185,10 +182,13 @@ Ext.define('MyApp.view.main.MainController', {
     },
 
     onCreateFile: function () {
+        var reloadGridDataFunc = this.reloadGridData;
+
         Ext.Msg.prompt('Создание нового файла', 'Пожалуйста, название с расширением:', function(btn, text){
             if (btn == 'ok'){
                 Ext.create('FileStore').createOrRewriteFile( MyApp.UserData.currentPath + text, '', () => {
                     //Ext.toast('Файл был успешно создан!');
+                    reloadGridDataFunc( MyApp.UserData.currentPath );
                 });
             }
         });
@@ -237,13 +237,16 @@ Ext.define('MyApp.view.main.MainController', {
         }).show();
     },
 
-    reloadGridData: function(path, fStoreInstance = false){
+    reloadGridData: function(path, fStoreInstance = false, callback = false){
         if(!fStoreInstance)
             fStoreInstance = Ext.create('FileStore'); 
             fStoreInstance.getFilesData(path ,filesData => {
 
             if( grid =  Ext.getCmp( MyApp.FileStore.Config.componentIds.filesGrid ) )
                 grid.getStore().loadData(filesData);
+
+            if(callback)
+                callback();
 
         } );
     },

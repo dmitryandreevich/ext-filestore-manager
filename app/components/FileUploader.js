@@ -2,6 +2,7 @@ Ext.define('MyApp.components.FileUploader', {
     extend: 'Ext.form.Panel',
     alias: 'FileUploader',
     xtype: 'fileuploader',
+    urlUpload: false,
     
     width: 400,
     bodyPadding: 15,
@@ -24,20 +25,19 @@ Ext.define('MyApp.components.FileUploader', {
         text: 'Загрузить',
         handler: function() {
             var form = Ext.getCmp('ext-fileuploader-1');
+            var url = form.urlUpload ? form.urlUpload : MyApp.FileStore.Config.urlMethods.uploadFile; 
 
             if(form.isValid()) {
                 form.submit({
-                    url: MyApp.FileStore.Config.urlMethods.uploadFile,
+                    url: url,
                     params: {
                         path: MyApp.UserData.currentPath,
                         selectedStore: MyApp.UserData.selectedStore
                     },
                     waitMsg: 'Загрузка вашего файла...',
                     success: function(form, action) {
-                        console.log(action);
                      },
                     failure: function(form, action) {
-                        console.log(action);
                     }
                 });
             }

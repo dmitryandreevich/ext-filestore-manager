@@ -96,7 +96,20 @@ Ext.define('MyApp.view.main.MainController', {
             title: 'Загрузчик файлов',
             items: [
                 {
-                    xtype: 'fileuploader'
+                    xtype: 'fileuploader',
+                }
+            ],
+        }).show();
+    },
+
+    onUploadToDB: function(){
+        Ext.create('Ext.window.Window',{
+            closable: true,
+            title: 'Загрузчик файлов в базу данных',
+            items: [
+                {
+                    xtype: 'fileuploader',
+                    urlUpload: MyApp.FileStore.Config.urlMethods.uploadFileToDB
                 }
             ],
         }).show();
@@ -176,8 +189,7 @@ Ext.define('MyApp.view.main.MainController', {
 
         Ext.Msg.prompt('Создание нового файла', 'Пожалуйста, название с расширением:', function(btn, text){
             if (btn == 'ok'){
-                Ext.create('FileStore').createOrRewriteFile( MyApp.UserData.currentPath + text, '', () => {
-                    //Ext.toast('Файл был успешно создан!');
+                Ext.create('FileStore').createOrRewriteFile( MyApp.UserData.currentPath + '/' + text, '', () => {
                     reloadGridDataFunc( MyApp.UserData.currentPath );
                 });
             }

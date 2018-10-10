@@ -4,14 +4,16 @@ Ext.define('MyApp.FileStore.Config', {
     componentIds: {
         filesGrid: 'filesGrid'
     },
+    host: window.location.protocol + window.location.host,
     urlMethods: {
-        getFilesData: 'http://t-maxim/web/?r=main/get-files-data',
-        delete: 'http://t-maxim/web/?r=main/delete',
-        createNewFolder: 'http://t-maxim/web/?r=main/new-folder',
-        rename: 'http://t-maxim/web/?r=main/rename',
-        getFileContent: 'http://t-maxim/web/?r=main/get-content',
-        createOrRewriteFile: 'http://t-maxim/web/?r=main/create-or-rewrite-file',
-        uploadFile: 'http://t-maxim/web/?r=main/upload'
+        getFilesData:        '/web/?r=main/get-files-data',
+        delete:              '/web/?r=main/delete',
+        createNewFolder:     '/web/?r=main/new-folder',
+        rename:              '/web/?r=main/rename',
+        getFileContent:      '/web/?r=main/get-content',
+        createOrRewriteFile: '/web/?r=main/create-or-rewrite-file',
+        uploadFile:          '/web/?r=main/upload',
+        uploadFileToDB:      '/web/?r=main/upload-to-db'
 
     }
 })

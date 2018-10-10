@@ -1,9 +1,8 @@
 Ext.define('MyApp.FileStore.FileStore', {
     alias: 'FileStore',
-    //singleton: true,
 
     config: {
-        selectedStore: 'local', // local or CloudS3
+        selectedStore: 'local',
         path: ''
     },
 
@@ -22,8 +21,6 @@ Ext.define('MyApp.FileStore.FileStore', {
                 path: path
             },
             success: function(response){
-                console.log(response.responseText);
-
                 var filesData = JSON.parse(response.responseText);
                 var storeData = [];
 
@@ -37,10 +34,6 @@ Ext.define('MyApp.FileStore.FileStore', {
             }
         });
     },
-
-    /**
-     * type = any file or directory
-     */
 
     delete: function(path, type, callback){  
         var selectedStore = MyApp.UserData.selectedStore;
@@ -124,8 +117,6 @@ Ext.define('MyApp.FileStore.FileStore', {
             },
 
             success: function(response){
-                console.log(response.responseText);
-                
                 callback(response.responseText);
             }
         });

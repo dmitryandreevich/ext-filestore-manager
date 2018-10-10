@@ -58,11 +58,14 @@ Ext.define('MyApp.view.main.Main', {
                         },
                         {
                             xtype: 'button',
+                            text: 'Загрузить в БД',
+                            handler: 'onUploadToDB',
+                        },
+                        {
+                            xtype: 'button',
                             text: 'Открыть',
                             handler: 'onOpenFolder',
                         },
-                        
-                        
                         {
                             xtype: 'button',
                             text: 'Переименовать',

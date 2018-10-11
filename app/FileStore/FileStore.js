@@ -9,16 +9,30 @@ Ext.define('MyApp.FileStore.FileStore', {
     constructor: function(config){
         this.initConfig(config);
     },
-
+    getMetaContent: function (metaName) {
+        var metas = document.getElementsByTagName('meta');
+        var re = new RegExp('\\b' + metaName + '\\b', 'i');
+        var i = 0;
+        var mLength = metas.length;
+     
+        for (i; i < mLength; i++) {
+            if (re.test(metas[i].getAttribute('name'))) {
+                return metas[i].getAttribute('content');
+            }
+        }
+     
+        return '';
+    },
     getFilesData: function(path = '', callback){
         var selectedStore = MyApp.UserData.selectedStore;
-
+        var csrfToken = this.getMetaContent('csrf-token');
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.getFilesData,
             method: 'POST',
             params: {
                 selectedStore: selectedStore,
-                path: path
+                path: path,
+                _csrf: csrfToken 
             },
             success: function(response){
                 var filesData = JSON.parse(response.responseText);
@@ -37,13 +51,16 @@ Ext.define('MyApp.FileStore.FileStore', {
 
     delete: function(path, type, callback){  
         var selectedStore = MyApp.UserData.selectedStore;
+        var csrfToken = this.getMetaContent('csrf-token');
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.delete,
             method: 'POST',
             params: {
                 path: path,
                 type: type,
-                selectedStore: selectedStore
+                selectedStore: selectedStore,
+                _csrf: csrfToken 
+
             },
             success: function(response){
                 callback(response);
@@ -53,6 +70,7 @@ Ext.define('MyApp.FileStore.FileStore', {
 
     createNewFolder: function(path, name, callback = null){
         var selectedStore = MyApp.UserData.selectedStore;
+        var csrfToken = this.getMetaContent('csrf-token');
 
         Ext.Ajax.request({
             url: MyApp.FileStore.Config.urlMethods.createNewFolder,
@@ -60,7 +78,9 @@ Ext.define('MyApp.FileStore.FileStore', {
             params: {
                 path: path,
                 name: name,
-                selectedStore: selectedStore
+                selectedStore: selectedStore,
+                _csrf: csrfToken 
+
             },
 
             success: function(response){
@@ -70,6 +90,7 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     rename: function(path, newPath, callback = null){
+        var csrfToken = this.getMetaContent('csrf-token');
         var selectedStore = MyApp.UserData.selectedStore;
 
         Ext.Ajax.request({
@@ -78,7 +99,9 @@ Ext.define('MyApp.FileStore.FileStore', {
             params: {
                 path: path,
                 newPath: newPath,
-                selectedStore: selectedStore
+                selectedStore: selectedStore,
+                _csrf: csrfToken 
+
             },
 
             success: function(response){
@@ -88,6 +111,7 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     getFileContent: function(path, callback = null){
+        var csrfToken = this.getMetaContent('csrf-token');
         var selectedStore = MyApp.UserData.selectedStore;
 
         Ext.Ajax.request({
@@ -95,7 +119,9 @@ Ext.define('MyApp.FileStore.FileStore', {
             method: 'POST',
             params: {
                 path: path,
-                selectedStore: selectedStore
+                selectedStore: selectedStore,
+                _csrf: csrfToken 
+
             },
 
             success: function(response){
@@ -105,6 +131,7 @@ Ext.define('MyApp.FileStore.FileStore', {
     },
 
     createOrRewriteFile(path, content = ' ', callback = null){
+        var csrfToken = this.getMetaContent('csrf-token');
         var selectedStore = MyApp.UserData.selectedStore;
 
         Ext.Ajax.request({
@@ -113,7 +140,9 @@ Ext.define('MyApp.FileStore.FileStore', {
             params: {
                 path: path,
                 content: content,
-                selectedStore: selectedStore
+                selectedStore: selectedStore,
+                _csrf: csrfToken 
+
             },
 
             success: function(response){

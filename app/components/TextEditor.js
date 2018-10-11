@@ -20,8 +20,6 @@ Ext.define('MyApp.components.TextEditor', {
         {
             xtype: 'textareafield',
             height: 350,
-            
-            //disabled: true,
             id: 'editorArea',
             value: '',
         }
@@ -38,7 +36,6 @@ Ext.define('MyApp.components.TextEditor', {
                 var pathToFile = Ext.getCmp('textEditorWindow').getPathToFile();
                 var content = Ext.getCmp('editorArea').getValue();
 
-                console.log(content);
                 Ext.create('FileStore').createOrRewriteFile(pathToFile, content, () => {
                     Ext.toast('Файл был успешно сохранён!');
                 });

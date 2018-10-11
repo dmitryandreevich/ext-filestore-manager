@@ -26,13 +26,15 @@ Ext.define('MyApp.components.FileUploader', {
         handler: function() {
             var form = Ext.getCmp('ext-fileuploader-1');
             var url = form.urlUpload ? form.urlUpload : MyApp.FileStore.Config.urlMethods.uploadFile; 
+            var csrfToken = Ext.create('MyApp.FileStore.FileStore').getMetaContent('csrf-token');
 
             if(form.isValid()) {
                 form.submit({
                     url: url,
                     params: {
                         path: MyApp.UserData.currentPath,
-                        selectedStore: MyApp.UserData.selectedStore
+                        selectedStore: MyApp.UserData.selectedStore,
+                        _csrf: csrfToken
                     },
                     waitMsg: 'Загрузка вашего файла...',
                     success: function(form, action) {

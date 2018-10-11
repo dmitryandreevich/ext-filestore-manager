@@ -2,7 +2,7 @@ Ext.define('MyApp.components.ImageViewer', {
     extend: 'Ext.window.Window',
 
     imageId: 'imageViewerImg',
-
+    id: 'imageViewer',
     setSrcBase64: function(imgBase64){
         var img = Ext.getCmp('imageViewerImg');
 
@@ -26,7 +26,9 @@ Ext.define('MyApp.components.ImageViewer', {
     buttons: [
         {
             text: 'Закрыть',
-            handler: () => { this.close(); }       
+            handler: () => { 
+                Ext.getCmp('imageViewer').close();
+            }       
         }
     ]
 });

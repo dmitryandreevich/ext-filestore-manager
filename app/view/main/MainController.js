@@ -97,6 +97,7 @@ Ext.define('MyApp.view.main.MainController', {
             items: [
                 {
                     xtype: 'fileuploader',
+                    urlUpload: MyApp.FileStore.Config.urlMethods.uploadFile
                 }
             ],
         }).show();
